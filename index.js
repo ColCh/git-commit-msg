@@ -224,7 +224,7 @@ if (global.FORCE_CLI_EXECUTE || require.main === module) {
   const process = require('process');
 
   const commitMsgFilePath = process.argv[process.argv.length - 1];
-  const commitMessage = fs.readFileSync(commitMsgFilePath);
+  const commitMessage = fs.readFileSync(commitMsgFilePath).toString();
   const newCommitMessage = main(commitMessage);
 
   if (commitMessage !== newCommitMessage) {
