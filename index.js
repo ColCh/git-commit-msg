@@ -128,6 +128,10 @@ const morphs = [
 
       const changedFilesString = msg.slice(changedFilesIndexStart, changedFilesIndexEnd);
 
+      if (!changedFilesString) {
+        return [];
+      }
+
       const parseFilePathReg = new RegExp(
         [
           '#\\s+', // file path should start with comment mark followed by tab symbol
