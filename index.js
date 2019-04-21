@@ -40,6 +40,7 @@ const markWordsWithEmoji = {
   configure: '⚙️',
   optimize: ' 🚀',
   typo: ' 📝',
+  initial: ' 🌀',
 };
 /* #endregion */
 

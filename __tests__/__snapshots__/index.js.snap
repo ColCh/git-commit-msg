@@ -64,6 +64,8 @@ exports[`main test for git-commit-msg mark words with emoji per-word tests given
 
 exports[`main test for git-commit-msg mark words with emoji per-word tests given word "increase" should match snapshot 1`] = `"some msg 📈  increase some msg"`;
 
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "initial" should match snapshot 1`] = `"some msg  🌀 initial some msg"`;
+
 exports[`main test for git-commit-msg mark words with emoji per-word tests given word "optimize" should match snapshot 1`] = `"some msg  🚀 optimize some msg"`;
 
 exports[`main test for git-commit-msg mark words with emoji per-word tests given word "package" should match snapshot 1`] = `"some msg 📦 package some msg"`;
