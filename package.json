@@ -1,5 +1,5 @@
 {
-  "name": "git-commit-msg",
+  "name": "@colch/git-commit-msg",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
