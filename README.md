@@ -5,6 +5,16 @@
 3. ???
 4. PROFIT
 
+## demo
+
+<details>
+<summary>Open GIF spoiler</summary>
+<img src="https://github.com/ColCh/git-commit-msg/blob/master/demo/demo.gif" />
+</details>
+
+demo on streamable: https://streamable.com/n0u5p
+webm: https://github.com/ColCh/git-commit-msg/blob/master/demo/demo.webm
+
 ## more info
 
 This hook currently does that:
