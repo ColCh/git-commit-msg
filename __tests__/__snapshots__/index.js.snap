@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "chore" should match snapshot 1`] = `"😒 chore: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "ci" should match snapshot 1`] = `"🤖 ci: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "docs" should match snapshot 1`] = `"📝 docs: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "feat" should match snapshot 1`] = `"⭐ feat: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "fix" should match snapshot 1`] = `"🛠 fix: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "perf" should match snapshot 1`] = `"⚡ perf: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "refactor" should match snapshot 1`] = `"♻ refactor: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "style" should match snapshot 1`] = `"💄 style: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "test" should match snapshot 1`] = `"🔍 test: some msg"`;
+
+exports[`main test for git-commit-msg commit types per-type tests given commit type "type" should match snapshot 1`] = `"🏷 type: some msg"`;
+
+exports[`main test for git-commit-msg context inferring should match snapshot with full commit message 1`] = `
+"my commit message
+# Found 3 contexts
+#     * modified-file
+#     * deleted-file
+#     * new-file
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is up to date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   modified-file.txt
+#	deleted:    deleted-file.txt
+#	new file:   new-file.txt
+#
+# Changes not staged for commit:
+#	deleted:    deleted-not-staged.txt
+#	modified:   modified-not-staged.txt
+#
+# Untracked files:
+#	untracked.txt
+#"
+`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "add" should match snapshot 1`] = `"some msg ➕ add some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "change" should match snapshot 1`] = `"some msg 🔁 change some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "config" should match snapshot 1`] = `"some msg ⚙️ config some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "configure" should match snapshot 1`] = `"some msg ⚙️ configure some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "copy" should match snapshot 1`] = `"some msg  📋 copy some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "decrease" should match snapshot 1`] = `"some msg  📉 decrease some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "deploy" should match snapshot 1`] = `"some msg 📦 deploy some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "fix" should match snapshot 1`] = `"some msg 🛠 fix some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "increase" should match snapshot 1`] = `"some msg 📈  increase some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "optimize" should match snapshot 1`] = `"some msg  🚀 optimize some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "package" should match snapshot 1`] = `"some msg 📦 package some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "remove" should match snapshot 1`] = `"some msg ➖ remove some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "rename" should match snapshot 1`] = `"some msg 🔁 rename some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "typo" should match snapshot 1`] = `"some msg  📝 typo some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "update" should match snapshot 1`] = `"some msg ⬆  update some msg"`;
+
+exports[`main test for git-commit-msg mark words with emoji per-word tests given word "webpack" should match snapshot 1`] = `"some msg  🎁 webpack some msg"`;
