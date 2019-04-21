@@ -217,6 +217,70 @@ describe('main test for git-commit-msg', () => {
       );
     });
 
+    it('should infer double underscore context', () => {
+      const msg = [
+        'my commit message',
+        `# Please enter the commit message for your changes. Lines starting`,
+        `# with '#' will be ignored, and an empty message aborts the commit.`,
+        `#`,
+        `# On branch master`,
+        `# Your branch is up to date with 'origin/master'.`,
+        `#`,
+        `# Changes to be committed:`,
+        `#	modified:   src/foo/__snapshots__/index.js`,
+        `#`,
+      ].join('\n');
+
+      expect(main(msg)).toEqual(
+        [
+          'my commit message',
+          `# Found 1 context`,
+          `#     * foo`,
+          `# Please enter the commit message for your changes. Lines starting`,
+          `# with '#' will be ignored, and an empty message aborts the commit.`,
+          `#`,
+          `# On branch master`,
+          `# Your branch is up to date with 'origin/master'.`,
+          `#`,
+          `# Changes to be committed:`,
+          `#	modified:   src/foo/__snapshots__/index.js`,
+          `#`,
+        ].join('\n'),
+      );
+    });
+
+    it('should infer default double underscore context', () => {
+      const msg = [
+        'my commit message',
+        `# Please enter the commit message for your changes. Lines starting`,
+        `# with '#' will be ignored, and an empty message aborts the commit.`,
+        `#`,
+        `# On branch master`,
+        `# Your branch is up to date with 'origin/master'.`,
+        `#`,
+        `# Changes to be committed:`,
+        `#	modified:   src/__snapshots__/index.js`,
+        `#`,
+      ].join('\n');
+
+      expect(main(msg)).toEqual(
+        [
+          'my commit message',
+          `# Found 1 context`,
+          `#     * index`,
+          `# Please enter the commit message for your changes. Lines starting`,
+          `# with '#' will be ignored, and an empty message aborts the commit.`,
+          `#`,
+          `# On branch master`,
+          `# Your branch is up to date with 'origin/master'.`,
+          `#`,
+          `# Changes to be committed:`,
+          `#	modified:   src/__snapshots__/index.js`,
+          `#`,
+        ].join('\n'),
+      );
+    });
+
     it('should infer context 3 times from full commit message', () => {
       const msg = [
         'my commit message',

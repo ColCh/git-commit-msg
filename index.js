@@ -183,6 +183,17 @@ const morphs = [
       /* #endregion */
 
       /* #region medium cases */
+      if (
+        filename.startsWith('index') &&
+        (parentDir === '__tests__' || parentDir === '__snapshots__')
+      ) {
+        // e.g. src/foo/__snapshots__/index.js -> foo
+        const pathParts = path.split('/');
+        if (pathParts.length > 3 && pathParts[pathParts.length - 3]) {
+          // fail with '__snapshots__/index.js'
+          return pathParts[pathParts.length - 3];
+        }
+      }
       if (filename === 'index' && parentDir !== '') {
         // e.g. src/foo/index.js -> foo
         return filename;
