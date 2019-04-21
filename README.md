@@ -1,5 +1,7 @@
 # git-commit-msg
 
+Adds emojis and infers commit context for people who use conventional commits
+
 1. install it as git hooks: `prepare-commit-msg` and `commit-msg`
 2. follow git conventional commits: https://www.conventionalcommits.org/en/v1.0.0-beta.2/
 3. ???
