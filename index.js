@@ -64,7 +64,20 @@ const morphs = [
       ].join(''),
     );
 
-    return msg.replace(emojis, (matched, type) => `${commitTypeToEmoji[type]} ${matched}`);
+    const firstLinePos = msg.indexOf('\n');
+    const firstLine = msg.slice(0, firstLinePos === -1 ? undefined : firstLinePos);
+    const otherLines = firstLinePos === -1 ? '' : msg.slice(firstLinePos);
+
+    const replacedFirstLine = msg.replace(
+      emojis,
+      (matched, type) => `${commitTypeToEmoji[type]} ${matched}`,
+    );
+
+    if (replacedFirstLine === firstLine) {
+      return msg;
+    }
+
+    return replacedFirstLine + otherLines;
   },
   /* #endregion */
 

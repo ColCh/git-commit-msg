@@ -43,6 +43,28 @@ exports[`main test for git-commit-msg context inferring should match snapshot wi
 #
 # Untracked files:
 #	untracked.txt
+#
+# Found 3 contexts
+#     * modified-file
+#     * deleted-file
+#     * new-file
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is up to date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   modified-file.txt
+#	deleted:    deleted-file.txt
+#	new file:   new-file.txt
+#
+# Changes not staged for commit:
+#	deleted:    deleted-not-staged.txt
+#	modified:   modified-not-staged.txt
+#
+# Untracked files:
+#	untracked.txt
 #"
 `;
 
