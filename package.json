@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "lint": "eslint __tests__/*.js index.js",
     "prettify": "prettier-eslint __tests__/*.js index.js"
   },
