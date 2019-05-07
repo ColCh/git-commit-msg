@@ -29,4 +29,10 @@ This hook currently does that:
 
 `yarn global add @colch/git-commit-msg`
 
-add `git-commit-msg` into `prepare-commit-msg` and `commit-msg` hooks
+add `git-commit-msg` into `prepare-commit-msg` and `commit-msg` hooks:
+
+`git-commit-msg $1`
+
+to appear like that:
+
+<img src="screenshots/hooks.png" />
