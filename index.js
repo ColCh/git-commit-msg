@@ -169,10 +169,6 @@ const morphs = [
 
     const inferContext = path => {
       const pathLowerCased = path.toLowerCase();
-      const parentDir = (() => {
-        const lastSlash = path.lastIndexOf('/');
-        return path.slice(path.lastIndexOf('/', lastSlash - 1) + 1, lastSlash);
-      })();
       const basename = path.replace(/^.*[\\/]/, '');
       const basenameLowerCased = path.replace(/^.*[\\/]/, '');
       const filename = basename.slice(0, basename.lastIndexOf('.'));
@@ -199,28 +195,25 @@ const morphs = [
       }
       // #endregion
 
-      // #region medium cases
-      if (
-        filenameLowerCased.startsWith('index') &&
-        (parentDir === '__tests__' || parentDir === '__snapshots__')
-      ) {
-        // e.g. src/foo/__snapshots__/index.js -> foo
-        const pathParts = pathLowerCased.split('/');
-        if (pathParts.length > 3 && pathParts[pathParts.length - 3]) {
-          // fail with '__snapshots__/index.js'
-          return pathParts[pathParts.length - 3];
-        }
-      }
-      if (filenameLowerCased === 'index' && parentDir !== '') {
-        // e.g. src/foo/index.js -> foo
+      const pathParts = path
+        .split('/')
+        // skip most parent dir
+        .slice(1)
+        .filter(part => {
+          const lowercased = part.toLowerCase();
+          return !(lowercased.startsWith('index') || ['__tests__', '__snapshots__'].includes(part));
+        });
+
+      const contexts = pathParts.slice(0, maxInferredContexts);
+
+      if (pathParts.length === 0) {
         return filename;
       }
-      // #endregion
 
-      return filename;
+      return contexts;
     };
 
-    const contexts = files.map(path => inferContext(path));
+    const contexts = files.reduce((acc, path) => acc.concat(inferContext(path)), []);
     const uniqueContexts = [...new Set(contexts)];
 
     const contextsWord = uniqueContexts.length > 1 ? 'contexts' : 'context';

@@ -449,6 +449,26 @@ describe('main test for git-commit-msg', () => {
 
       expect(main(msg)).toMatchSnapshot();
     });
+
+    it('should collect more contexts', () => {
+      const msg = [
+        `# Changes to be committed:`,
+        `#	new file:   my-project/baz/BAR/FOO/index.ts`,
+        `#`,
+      ].join('\n');
+
+      expect(main(msg)).toEqual(
+        [
+          `# Found 3 contexts`,
+          `#     * baz`,
+          `#     * BAR`,
+          `#     * FOO`,
+          `# Changes to be committed:`,
+          `#	new file:   my-project/baz/BAR/FOO/index.ts`,
+          `#`,
+        ].join('\n'),
+      );
+    });
   });
 
   it('should preserve case', () => {
