@@ -39,6 +39,73 @@ describe('main test for git-commit-msg', () => {
         });
       });
     });
+
+    describe('logic tests', () => {
+      it('should not replace text after first line', () => {
+        const msg = [
+          ``,
+          `# Please enter the commit message for your changes. Lines starting`,
+          `# with '#' will be ignored, and an empty message aborts the commit.`,
+          `#`,
+          `# On branch master`,
+          `# Your branch is ahead of 'origin/master' by 2 commits.`,
+          `#   (use "git push" to publish your local commits)`,
+          `#`,
+          `# Changes to be committed:`,
+          `#       modified:   index.js`,
+          `#`,
+          `# ------------------------ >8 ------------------------`,
+          `# Do not modify or remove the line above.`,
+          `# Everything below it will be ignored.`,
+          `diff --git c/index.js i/index.js`,
+          `index 3928a44..04eeec9 100755`,
+          `--- c/index.js`,
+          `+++ i/index.js`,
+          `@@ -9,6 +9,8 @@`,
+          `  * this is an attempt to keep it short and simple`,
+          `  */`,
+          ``,
+          `  test: /./svg/`,
+          `+`,
+          ` /* #region options */`,
+          ` const commitTypeToEmoji = {`,
+          `   chore: '😒',`,
+        ].join('\n');
+
+        expect(main(msg)).toEqual(
+          [
+            ``,
+            `# Found no contexts`,
+            `# Please enter the commit message for your changes. Lines starting`,
+            `# with '#' will be ignored, and an empty message aborts the commit.`,
+            `#`,
+            `# On branch master`,
+            `# Your branch is ahead of 'origin/master' by 2 commits.`,
+            `#   (use "git push" to publish your local commits)`,
+            `#`,
+            `# Changes to be committed:`,
+            `#       modified:   index.js`,
+            `#`,
+            `# ------------------------ >8 ------------------------`,
+            `# Do not modify or remove the line above.`,
+            `# Everything below it will be ignored.`,
+            `diff --git c/index.js i/index.js`,
+            `index 3928a44..04eeec9 100755`,
+            `--- c/index.js`,
+            `+++ i/index.js`,
+            `@@ -9,6 +9,8 @@`,
+            `  * this is an attempt to keep it short and simple`,
+            `  */`,
+            ``,
+            `  test: /./svg/`,
+            `+`,
+            ` /* #region options */`,
+            ` const commitTypeToEmoji = {`,
+            `   chore: '😒',`,
+          ].join('\n'),
+        );
+      });
+    });
   });
 
   describe('mark words with emoji', () => {
