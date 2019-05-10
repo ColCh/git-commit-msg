@@ -162,32 +162,34 @@ const morphs = [
           .filter(str => str.startsWith('#	'))
           .map(str => (str.match(parseFilePathReg) || [])[1] || undefined)
           .filter(x => x !== undefined)
-          .map(x => x.toLowerCase())
       );
     })();
 
     const inferContext = path => {
+      const pathLowerCased = path.toLowerCase();
       const parentDir = (() => {
         const lastSlash = path.lastIndexOf('/');
         return path.slice(path.lastIndexOf('/', lastSlash - 1) + 1, lastSlash);
       })();
       const basename = path.replace(/^.*[\\/]/, '');
+      const basenameLowerCased = path.replace(/^.*[\\/]/, '');
       const filename = basename.slice(0, basename.lastIndexOf('.'));
+      const filenameLowerCased = filename.toLowerCase();
 
       /* #region simple cases */
-      if (basename === 'package.json') {
+      if (basenameLowerCased === 'package.json') {
         return 'pkg';
       }
-      if (filename === 'karma.conf') {
+      if (filenameLowerCased === 'karma.conf') {
         return 'karma';
       }
-      if (filename === 'webpack.conf' || path.includes('/webpack/')) {
+      if (filenameLowerCased === 'webpack.conf' || pathLowerCased.includes('/webpack/')) {
         return 'webpack';
       }
-      if (filename === 'readme.md') {
+      if (filenameLowerCased === 'readme.md') {
         return 'readme';
       }
-      if (filename === 'changelog.md') {
+      if (filenameLowerCased === 'changelog.md') {
         return 'changelog';
       }
       if (basename.startsWith('yarn')) {
@@ -197,17 +199,17 @@ const morphs = [
 
       /* #region medium cases */
       if (
-        filename.startsWith('index') &&
+        filenameLowerCased.startsWith('index') &&
         (parentDir === '__tests__' || parentDir === '__snapshots__')
       ) {
         // e.g. src/foo/__snapshots__/index.js -> foo
-        const pathParts = path.split('/');
+        const pathParts = pathLowerCased.split('/');
         if (pathParts.length > 3 && pathParts[pathParts.length - 3]) {
           // fail with '__snapshots__/index.js'
           return pathParts[pathParts.length - 3];
         }
       }
-      if (filename === 'index' && parentDir !== '') {
+      if (filenameLowerCased === 'index' && parentDir !== '') {
         // e.g. src/foo/index.js -> foo
         return filename;
       }

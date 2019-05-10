@@ -383,4 +383,19 @@ describe('main test for git-commit-msg', () => {
       expect(main(msg)).toMatchSnapshot();
     });
   });
+
+  it('should preserve case', () => {
+    debugger;
+    const msg = [`# Changes to be committed:`, `#	new file:   NewFile.txt`, `#`].join('\n');
+
+    expect(main(msg)).toEqual(
+      [
+        `# Found 1 context`,
+        `#     * NewFile`,
+        `# Changes to be committed:`,
+        `#	new file:   NewFile.txt`,
+        `#`,
+      ].join('\n'),
+    );
+  });
 });
