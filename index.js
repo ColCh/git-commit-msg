@@ -68,7 +68,7 @@ const morphs = [
     const firstLine = msg.slice(0, firstLinePos === -1 ? undefined : firstLinePos);
     const otherLines = firstLinePos === -1 ? '' : msg.slice(firstLinePos);
 
-    const replacedFirstLine = msg.replace(
+    const replacedFirstLine = firstLine.replace(
       emojis,
       (matched, type) => `${commitTypeToEmoji[type]} ${matched}`,
     );
