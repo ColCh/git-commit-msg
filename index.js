@@ -9,7 +9,7 @@
  * this is an attempt to keep it short and simple
  */
 
-/* #region options */
+// #region options
 const commitTypeToEmoji = {
   chore: '😒',
   docs: '📝',
@@ -42,11 +42,13 @@ const markWordsWithEmoji = {
   typo: ' 📝',
   initial: ' 🌀',
 };
-/* #endregion */
 
-/* #region morphs */
+const maxInferredContexts = 3;
+// #endregion
+
+// #region morphs
 const morphs = [
-  /* #region context emoji */
+  // #region context emoji
   msg => {
     const typesWithoutEmoji = Object.keys(commitTypeToEmoji).map(type =>
       [
@@ -79,9 +81,9 @@ const morphs = [
 
     return replacedFirstLine + otherLines;
   },
-  /* #endregion */
+  // #endregion
 
-  /* #region mark word with emoji */
+  // #region mark word with emoji
   msg => {
     const wordsWithoutEmoji = Object.keys(markWordsWithEmoji).map(word =>
       [
@@ -116,9 +118,9 @@ const morphs = [
 
     return replacedFirstLine + otherLines;
   },
-  /* #endregion */
+  // #endregion
 
-  /* #region infer context */
+  // #region infer context
   // works if commit is *verbose*
   msg => {
     /**
@@ -176,7 +178,7 @@ const morphs = [
       const filename = basename.slice(0, basename.lastIndexOf('.'));
       const filenameLowerCased = filename.toLowerCase();
 
-      /* #region simple cases */
+      // #region simple cases
       if (basenameLowerCased === 'package.json') {
         return 'pkg';
       }
@@ -195,9 +197,9 @@ const morphs = [
       if (basename.startsWith('yarn')) {
         return 'yarn';
       }
-      /* #endregion */
+      // #endregion
 
-      /* #region medium cases */
+      // #region medium cases
       if (
         filenameLowerCased.startsWith('index') &&
         (parentDir === '__tests__' || parentDir === '__snapshots__')
@@ -213,7 +215,7 @@ const morphs = [
         // e.g. src/foo/index.js -> foo
         return filename;
       }
-      /* #endregion */
+      // #endregion
 
       return filename;
     };
@@ -237,9 +239,9 @@ const morphs = [
 
     return msg.slice(0, firstCommentedLine) + contextReport + msg.slice(firstCommentedLine);
   },
-  /* #endregion */
+  // #endregion
 ];
-/* #endregion */
+// #endregion
 
 function main(msg) {
   // e.g. function composition
