@@ -1,6 +1,10 @@
 /* eslint-disable global-require */
 const { main, commitTypeToEmoji, markWordsWithEmoji } = require('../');
 
+jest.mock('emoji-suggestions', () => jest.fn());
+
+const emojiSuggestionsMock = require('emoji-suggestions');
+
 describe('main test for git-commit-msg', () => {
   describe('commit types', () => {
     describe('per-type tests', () => {
@@ -203,6 +207,61 @@ describe('main test for git-commit-msg', () => {
             expect(main(`${msg} ${word} ${msg}`)).toMatchSnapshot();
           });
         });
+      });
+    });
+
+    describe('auto suggestion', () => {
+      const fooEmoji = '👋';
+
+      beforeEach(() => {
+        emojiSuggestionsMock.mockReset();
+        emojiSuggestionsMock.mockReturnValue([{ FOO: [fooEmoji] }]);
+      });
+
+      it('should suggest emoji for word FOO', () => {
+        expect(main(`FOO`)).toEqual(`${fooEmoji} FOO`);
+      });
+
+      it('should not suggest emoji for commit type word without context', () => {
+        expect(main(`FOO: msg`)).toEqual(`FOO: msg`);
+      });
+
+      it('should not suggest emoji for context', () => {
+        expect(main(`baz(FOO): msg`)).toEqual(`baz(FOO): msg`);
+      });
+
+      it('should suggest emoji for full commit msg with word at end', () => {
+        expect(main(`baz(FOO): msg FOO`)).toEqual(`baz(FOO): msg ${fooEmoji} FOO`);
+      });
+
+      it('should suggest emoji for full commit msg with word at beginning', () => {
+        expect(main(`baz(FOO): FOO msg`)).toEqual(`baz(FOO): ${fooEmoji} FOO msg`);
+      });
+
+      it('should suggest emoji for full commit msg with word in middle', () => {
+        expect(main(`baz(FOO): FOO msg`)).toEqual(`baz(FOO): ${fooEmoji} FOO msg`);
+      });
+
+      it('should not add emoji in case global option specified', () => {
+        global.SKIP_ADDING_EMOJIS = true;
+        expect(main(`FOO`)).toEqual(`FOO`);
+        delete global.SKIP_ADDING_EMOJIS;
+      });
+
+      it('should not add emoji in case global option specified for skipping auto suggested emojis', () => {
+        global.SKIP_AUTO_SUGGEST = true;
+        expect(main(`FOO`)).toEqual(`FOO`);
+        delete global.SKIP_AUTO_SUGGEST;
+      });
+
+      it('should replace only in first line', () => {
+        expect(main([`FOO`, `FOO`].join('\n'))).toEqual([`${fooEmoji} FOO`, `FOO`].join('\n'));
+      });
+
+      it('should not use auto suggestions for words in hardcoded map', () => {
+        const firstHardcodedWord = Object.keys(markWordsWithEmoji)[0];
+        main(`${firstHardcodedWord}`);
+        expect(emojiSuggestionsMock).not.toBeCalled();
       });
     });
   });

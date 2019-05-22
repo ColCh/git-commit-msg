@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`e2e test should match snapshot 1`] = `
-"😒 chore(pkg): my commit message
+"😒 chore(pkg): my commit 💬 message
 # Found 3 contexts
 #     * modified-file
 #     * deleted-file

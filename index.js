@@ -1,5 +1,9 @@
 #!/usr/bin/env node
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable global-require */
+
+const emojiSuggestions = require('emoji-suggestions');
+const { lib: emojiLib } = require('emojilib');
 
 /**
  *     GIT-COMMIT-MSG
@@ -44,14 +48,19 @@ const markWordsWithEmoji = {
   correct: '🎚️ ',
   handle: '🏭',
   use: '🏄',
+  // ru: '🇷🇺',
 };
 
 const maxInferredContexts = 3;
+
+// https://github.com/muan/emojilib
+const whitelistedEmojiCategories = ['people', 'animals_and_nature', 'objects', 'symbols'];
 // #endregion
 
 // #region options
 const options = {
   skipEmojis: () => global.SKIP_ADDING_EMOJIS === true || !!process.env.SKIP_ADDING_EMOJIS,
+  skipAutoSuggestEmojis: () => global.SKIP_AUTO_SUGGEST === true || !!process.env.SKIP_AUTO_SUGGEST,
 };
 // #endregion
 
@@ -91,6 +100,66 @@ const morphs = [
     if (replacedFirstLine === firstLine) {
       return msg;
     }
+
+    return replacedFirstLine + otherLines;
+  },
+  // #endregion
+
+  // #region emoji autosuggestion
+  msg => {
+    if (options.skipEmojis() || options.skipAutoSuggestEmojis()) {
+      return msg;
+    }
+
+    const getEmojiCategory = emoji => {
+      for (const [, info] of Object.entries(emojiLib)) {
+        if (info.char === emoji) {
+          return info.category;
+        }
+      }
+    };
+
+    const filterEmojis = emojis => {
+      return emojis.filter(emoji => whitelistedEmojiCategories.includes(getEmojiCategory(emoji)));
+    };
+
+    const suggestEmoji = word => {
+      const result = emojiSuggestions(word);
+      if (!Array.isArray(result) || result.length === 0) {
+        return null;
+      }
+      const suggestions = result[0];
+      const emojis = suggestions[word];
+      if (!Array.isArray(emojis) || emojis.length === 0) {
+        return null;
+      }
+      const whitelistedEmojis = filterEmojis(emojis);
+      return whitelistedEmojis.length === 0 ? null : whitelistedEmojis[0];
+    };
+
+    const firstLinePos = msg.indexOf('\n');
+    const firstLine = msg.slice(0, firstLinePos === -1 ? undefined : firstLinePos);
+    const otherLines = firstLinePos === -1 ? '' : msg.slice(firstLinePos);
+
+    const firstLineMsgBorder = /^\w+\(\w+\)?:/.test(firstLine) ? firstLine.indexOf(':') : 0;
+    const firstLineBeforeMsg = firstLine.slice(0, firstLineMsgBorder);
+    const firstLineMsg = firstLine.slice(firstLineMsgBorder);
+
+    const replacedFirstLine =
+      firstLineBeforeMsg +
+      firstLineMsg
+        .split(' ')
+        .map(word => {
+          if (!word || !/^\w+$/.test(word) || word in markWordsWithEmoji) {
+            return word;
+          }
+          const emoji = suggestEmoji(word);
+          if (!emoji) {
+            return word;
+          }
+          return `${emoji} ${word}`;
+        })
+        .join(' ');
 
     return replacedFirstLine + otherLines;
   },
