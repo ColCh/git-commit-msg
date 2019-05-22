@@ -3,7 +3,7 @@
   "description": "Adds emojis and infers commit context for people who use conventional commits",
   "homepage": "https://github.com/ColCh/git-commit-msg",
   "bugs": "https://github.com/ColCh/git-commit-msg/issues",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": "index.js",
   "license": "MIT",
   "bin": "index.js",
