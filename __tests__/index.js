@@ -33,6 +33,12 @@ describe('main test for git-commit-msg', () => {
             );
           });
 
+          it('should not add emoji in case global option specified', () => {
+            global.SKIP_ADDING_EMOJIS = true;
+            expect(main(`${type}: ${msg}`)).toEqual(`${type}: ${msg}`);
+            delete global.SKIP_ADDING_EMOJIS;
+          });
+
           it('should match snapshot', () => {
             expect(main(`${type}: ${msg}`)).toMatchSnapshot();
           });
@@ -121,6 +127,12 @@ describe('main test for git-commit-msg', () => {
 
           it('should add emoji for oneline msg', () => {
             expect(main(`${msg} ${word} ${msg}`)).toEqual(`${msg} ${emoji} ${word} ${msg}`);
+          });
+
+          it('should not add emoji for oneline msg if flag specified', () => {
+            global.SKIP_ADDING_EMOJIS = true;
+            expect(main(`${msg} ${word} ${msg}`)).toEqual(`${msg} ${word} ${msg}`);
+            delete global.SKIP_ADDING_EMOJIS;
           });
 
           it('should not add emoji twice for oneline msg', () => {

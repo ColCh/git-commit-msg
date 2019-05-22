@@ -49,10 +49,20 @@ const markWordsWithEmoji = {
 const maxInferredContexts = 3;
 // #endregion
 
+// #region options
+const options = {
+  skipEmojis: () => global.SKIP_ADDING_EMOJIS === true || !!process.env.SKIP_ADDING_EMOJIS,
+};
+// #endregion
+
 // #region morphs
 const morphs = [
   // #region context emoji
   msg => {
+    if (options.skipEmojis()) {
+      return msg;
+    }
+
     const typesWithoutEmoji = Object.keys(commitTypeToEmoji).map(type =>
       [
         `(?<!${commitTypeToEmoji[type]}\\s)`, // no preceding emoji
@@ -88,6 +98,10 @@ const morphs = [
 
   // #region mark word with emoji
   msg => {
+    if (options.skipEmojis()) {
+      return msg;
+    }
+
     const wordsWithoutEmoji = Object.keys(markWordsWithEmoji).map(word =>
       [
         `(?<!${markWordsWithEmoji[word]}\\s)`, // no preceding emoji
