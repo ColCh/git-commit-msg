@@ -48,7 +48,7 @@ const markWordsWithEmoji = {
   correct: '🎚️ ',
   handle: '🏭',
   use: '🏄',
-  // ru: '🇷🇺',
+  ru: '🇷🇺 ',
 };
 
 const maxInferredContexts = 3;
