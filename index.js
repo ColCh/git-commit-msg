@@ -41,6 +41,9 @@ const markWordsWithEmoji = {
   optimize: ' 🚀',
   typo: ' 📝',
   initial: ' 🌀',
+  correct: '🎚️ ',
+  handle: '🏭',
+  use: '🏄',
 };
 
 const maxInferredContexts = 3;
