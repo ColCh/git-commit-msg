@@ -36,3 +36,11 @@ add `git-commit-msg` into `prepare-commit-msg` and `commit-msg` hooks:
 to appear like that:
 
 <img src="screenshots/hooks.png" />
+
+### options
+
+pass it like env variables
+
+* `SKIP_ADDING_EMOJIS` - completely disable emojis
+
+* `SKIP_AUTO_SUGGEST` - disable emoji auto suggest
