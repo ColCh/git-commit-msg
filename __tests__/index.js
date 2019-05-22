@@ -424,6 +424,46 @@ describe('main test for git-commit-msg', () => {
       );
     });
 
+    it('should infer webpack context from config file', () => {
+      const msg = [
+        'my commit message',
+        `# Changes to be committed:`,
+        `#	modified:   webpack.config.ts`,
+        `#`,
+      ].join('\n');
+
+      expect(main(msg)).toEqual(
+        [
+          'my commit message',
+          `# Found 1 context`,
+          `#     * webpack`,
+          `# Changes to be committed:`,
+          `#	modified:   webpack.config.ts`,
+          `#`,
+        ].join('\n'),
+      );
+    });
+
+    it('should infer webpack context from webpack directory', () => {
+      const msg = [
+        'my commit message',
+        `# Changes to be committed:`,
+        `#	modified:   src/webpack/index.js`,
+        `#`,
+      ].join('\n');
+
+      expect(main(msg)).toEqual(
+        [
+          'my commit message',
+          `# Found 1 context`,
+          `#     * webpack`,
+          `# Changes to be committed:`,
+          `#	modified:   src/webpack/index.js`,
+          `#`,
+        ].join('\n'),
+      );
+    });
+
     it('should match snapshot with full commit message', () => {
       const msg = [
         'my commit message',

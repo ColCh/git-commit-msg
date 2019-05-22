@@ -181,7 +181,7 @@ const morphs = [
       if (filenameLowerCased === 'karma.conf') {
         return 'karma';
       }
-      if (filenameLowerCased === 'webpack.conf' || pathLowerCased.includes('/webpack/')) {
+      if (filenameLowerCased.startsWith('webpack.config') || pathLowerCased.includes('/webpack/')) {
         return 'webpack';
       }
       if (filenameLowerCased === 'readme.md') {
