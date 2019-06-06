@@ -323,6 +323,10 @@ const morphs = [
 // #endregion
 
 function main(msg) {
+  if (/^Merge branch/.test(msg)) {
+    // leave merge commit msg as is
+    return msg;
+  }
   // e.g. function composition
   return morphs.reduceRight((currentMessage, morph) => morph(currentMessage), msg);
 }

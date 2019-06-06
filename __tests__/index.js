@@ -263,6 +263,12 @@ describe('main test for git-commit-msg', () => {
         main(`${firstHardcodedWord}`);
         expect(emojiSuggestionsMock).not.toBeCalled();
       });
+
+      it('should not suggest emoji for merge commit', () => {
+        emojiSuggestionsMock.mockReturnValue([{ branch: [fooEmoji] }]);
+        const msg = [`Merge branch 'foo-bar-baz' into 'master'`, 'Add foo, remove baz'].join('');
+        expect(main(msg)).toEqual(msg);
+      });
     });
   });
 
