@@ -586,6 +586,30 @@ describe('main test for git-commit-msg', () => {
         ].join('\n'),
       );
     });
+
+    it('should remove extensions', () => {
+      const msg = [
+        `# Changes to be committed:`,
+        `#	modified:   MODIFIED_FILE.ts`,
+        `#	deleted:    DeLeTeDFiLe.js`,
+        `#	new file:   newfile.txt`,
+        `#`,
+      ].join('\n');
+
+      expect(main(msg)).toEqual(
+        [
+          `# Found 3 contexts`,
+          `#     * MODIFIED_FILE`,
+          `#     * DeLeTeDFiLe`,
+          `#     * newfile`,
+          `# Changes to be committed:`,
+          `#	modified:   MODIFIED_FILE.ts`,
+          `#	deleted:    DeLeTeDFiLe.js`,
+          `#	new file:   newfile.txt`,
+          `#`,
+        ].join('\n'),
+      );
+    });
   });
 
   it('should preserve case', () => {
