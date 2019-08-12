@@ -281,6 +281,15 @@ describe('main test for git-commit-msg', () => {
         const msg = [`Merge branch 'foo-bar-baz' into 'master'`, 'Add foo, remove baz'].join('');
         expect(main(msg)).toEqual(msg);
       });
+
+      it('should not suggest emoji for message like merge commit', () => {
+        emojiSuggestionsMock.mockReturnValue([{ branch: [fooEmoji] }]);
+        const msg = [
+          `Fobar-1: Merge branch 'foo-bar-baz' into 'master'`,
+          'Add foo, remove baz',
+        ].join('');
+        expect(main(msg)).toEqual(msg);
+      });
     });
   });
 
