@@ -141,26 +141,22 @@ const morphs = [
     const firstLine = msg.slice(0, firstLinePos === -1 ? undefined : firstLinePos);
     const otherLines = firstLinePos === -1 ? '' : msg.slice(firstLinePos);
 
-    const firstLineMsgBorder = /^\w+\(\w+\)?:/.test(firstLine) ? firstLine.indexOf(':') : 0;
+    const firstLineMsgBorder = /^\w+(?:\(\w+\))?:/.test(firstLine) ? firstLine.indexOf(':') : 0;
     const firstLineBeforeMsg = firstLine.slice(0, firstLineMsgBorder);
     const firstLineMsg = firstLine.slice(firstLineMsgBorder);
 
     const replacedFirstLine =
       firstLineBeforeMsg +
-      firstLineMsg
-        .split(' ')
-        .map(word => {
-          if (!word || !/^\w+$/.test(word) || word in markWordsWithEmoji) {
-            return word;
-          }
-          const emoji = suggestEmoji(word);
-          if (!emoji) {
-            return word;
-          }
-          return `${emoji} ${word}`;
-        })
-        .join(' ');
-
+      firstLineMsg.replace(/(?:^|(?<=\w\s)|:\s*)(\w+)/g, (match, word) => {
+        if (!word || !/^\w+$/.test(word) || word in markWordsWithEmoji) {
+          return match;
+        }
+        const emoji = suggestEmoji(word);
+        if (!emoji) {
+          return match;
+        }
+        return match.replace(word, `${emoji} ${word}`);
+      });
     return replacedFirstLine + otherLines;
   },
   // #endregion

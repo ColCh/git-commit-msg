@@ -234,12 +234,24 @@ describe('main test for git-commit-msg', () => {
         expect(main(`baz(FOO): msg FOO`)).toEqual(`baz(FOO): msg ${fooEmoji} FOO`);
       });
 
+      it('should suggest emoji for full commit msg with word at end but add it only once', () => {
+        expect(main(`baz(FOO): msg ${fooEmoji} FOO`)).toEqual(`baz(FOO): msg ${fooEmoji} FOO`);
+      });
+
       it('should suggest emoji for full commit msg with word at beginning', () => {
         expect(main(`baz(FOO): FOO msg`)).toEqual(`baz(FOO): ${fooEmoji} FOO msg`);
       });
 
+      it('should suggest emoji for full commit msg with word at beginning but add it only once', () => {
+        expect(main(`baz(FOO): ${fooEmoji} FOO msg`)).toEqual(`baz(FOO): ${fooEmoji} FOO msg`);
+      });
+
       it('should suggest emoji for full commit msg with word in middle', () => {
         expect(main(`baz(FOO): FOO msg`)).toEqual(`baz(FOO): ${fooEmoji} FOO msg`);
+      });
+
+      it('should suggest emoji for full commit msg with word in middle but add it only once', () => {
+        expect(main(`baz(FOO): ${fooEmoji} FOO msg`)).toEqual(`baz(FOO): ${fooEmoji} FOO msg`);
       });
 
       it('should not add emoji in case global option specified', () => {
