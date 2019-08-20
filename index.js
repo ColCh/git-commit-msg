@@ -133,9 +133,9 @@ const morphs = [
     const firstLine = msg.slice(0, firstLinePos === -1 ? undefined : firstLinePos);
     const otherLines = firstLinePos === -1 ? '' : msg.slice(firstLinePos);
 
-    const firstLineMsgBorder = /^\w+(?:\(\w+\))?:/.test(firstLine) ? firstLine.indexOf(':') : 0;
-    const firstLineBeforeMsg = firstLine.slice(0, firstLineMsgBorder);
-    const firstLineMsg = firstLine.slice(firstLineMsgBorder);
+    const firstLineMsgMatch = /^(?:\w+-\d+:\s+)?\w+(?:\(\w+\))?:\s+/.exec(firstLine) || [''];
+    const firstLineBeforeMsg = firstLineMsgMatch[0];
+    const firstLineMsg = firstLine.slice(firstLineMsgMatch[0].length);
 
     const replacedFirstLine =
       firstLineBeforeMsg +

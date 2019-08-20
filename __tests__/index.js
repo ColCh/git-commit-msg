@@ -230,6 +230,17 @@ describe('main test for git-commit-msg', () => {
         expect(main(`baz(FOO): msg`)).toEqual(`baz(FOO): msg`);
       });
 
+      it('should not suggest emoji for commit message with ticket name and mock type', () => {
+        expect(main(`FOOBAR-0: FOO: FOO`)).toEqual(`FOOBAR-0: FOO: ${fooEmoji} FOO`);
+      });
+
+      it('should not suggest emoji for commit message with ticket name and real type', () => {
+        emojiSuggestionsMock.mockReturnValue([{ test: [fooEmoji] }]);
+        expect(main(`FOOBAR-0: test: test`)).toEqual(
+          `FOOBAR-0: ${commitTypeToEmoji.test} test: ${fooEmoji} test`,
+        );
+      });
+
       it('should suggest emoji for full commit msg with word at end', () => {
         expect(main(`baz(FOO): msg FOO`)).toEqual(`baz(FOO): msg ${fooEmoji} FOO`);
       });
