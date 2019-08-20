@@ -48,8 +48,12 @@ const whitelistedEmojiCategories = ['people', 'animals_and_nature', 'objects', '
 
 // #region options
 const options = {
-  skipEmojis: () => global.SKIP_ADDING_EMOJIS === true || !!process.env.SKIP_ADDING_EMOJIS,
-  skipAutoSuggestEmojis: () => global.SKIP_AUTO_SUGGEST === true || !!process.env.SKIP_AUTO_SUGGEST,
+  skipEmojis: () =>
+    global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS === true ||
+    !!process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS,
+  skipAutoSuggestEmojis: () =>
+    global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST === true ||
+    !!process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST,
 };
 // #endregion
 

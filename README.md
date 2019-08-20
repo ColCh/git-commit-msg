@@ -41,6 +41,6 @@ to appear like that:
 
 pass it like env variables
 
-* `SKIP_ADDING_EMOJIS` - completely disable emojis
+* `GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS` - completely disable emojis
 
-* `SKIP_AUTO_SUGGEST` - disable emoji auto suggest
+* `GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST` - disable emoji auto suggest

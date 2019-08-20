@@ -38,9 +38,9 @@ describe('main test for git-commit-msg', () => {
           });
 
           it('should not add emoji in case global option specified', () => {
-            global.SKIP_ADDING_EMOJIS = true;
+            global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = true;
             expect(main(`${type}: ${msg}`)).toEqual(`${type}: ${msg}`);
-            delete global.SKIP_ADDING_EMOJIS;
+            delete global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
           });
 
           it('should match snapshot', () => {
@@ -134,9 +134,9 @@ describe('main test for git-commit-msg', () => {
           });
 
           it('should not add emoji for oneline msg if flag specified', () => {
-            global.SKIP_ADDING_EMOJIS = true;
+            global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = true;
             expect(main(`${msg} ${word} ${msg}`)).toEqual(`${msg} ${word} ${msg}`);
-            delete global.SKIP_ADDING_EMOJIS;
+            delete global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
           });
 
           it('should not add emoji twice for oneline msg', () => {
@@ -266,15 +266,15 @@ describe('main test for git-commit-msg', () => {
       });
 
       it('should not add emoji in case global option specified', () => {
-        global.SKIP_ADDING_EMOJIS = true;
+        global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = true;
         expect(main(`FOO`)).toEqual(`FOO`);
-        delete global.SKIP_ADDING_EMOJIS;
+        delete global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
       });
 
       it('should not add emoji in case global option specified for skipping auto suggested emojis', () => {
-        global.SKIP_AUTO_SUGGEST = true;
+        global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST = true;
         expect(main(`FOO`)).toEqual(`FOO`);
-        delete global.SKIP_AUTO_SUGGEST;
+        delete global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST;
       });
 
       it('should replace only in first line', () => {
