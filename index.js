@@ -2,17 +2,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable global-require */
 
-const emojiSuggestions = require('emoji-suggestions');
-const { lib: emojiLib } = require('emojilib');
-
-/**
- *     GIT-COMMIT-MSG
- *
- * code is written without external deps
- * also without splitting code into files
- * this is an attempt to keep it short and simple
- */
-
 // #region options
 const commitTypeToEmoji = {
   chore: '😒',
@@ -110,6 +99,9 @@ const morphs = [
     if (options.skipEmojis() || options.skipAutoSuggestEmojis()) {
       return msg;
     }
+
+    const { lib: emojiLib } = require('emojilib');
+    const emojiSuggestions = require('emoji-suggestions');
 
     const getEmojiCategory = emoji => {
       for (const [, info] of Object.entries(emojiLib)) {
