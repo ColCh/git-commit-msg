@@ -1,14 +1,19 @@
 /* eslint-disable global-require */
-const { main, commitTypeToEmoji, markWordsWithEmoji } = require('../');
+const { main, commitTypeToEmoji, markWordsWithEmoji } = require('..');
 
 jest.mock('emoji-suggestions', () => jest.fn());
 
 const emojiSuggestionsMock = require('emoji-suggestions');
 
 describe('main test for git-commit-msg', () => {
+  beforeAll(() => {
+    delete process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
+    delete process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST;
+  });
+
   describe('commit types', () => {
     describe('per-type tests', () => {
-      Object.keys(commitTypeToEmoji).forEach(type => {
+      Object.keys(commitTypeToEmoji).forEach((type) => {
         describe(`given commit type "${type}"`, () => {
           const msg = 'some msg';
           const emoji = commitTypeToEmoji[type];
@@ -120,7 +125,7 @@ describe('main test for git-commit-msg', () => {
 
   describe('mark words with emoji', () => {
     describe('per-word tests', () => {
-      Object.keys(markWordsWithEmoji).forEach(word => {
+      Object.keys(markWordsWithEmoji).forEach((word) => {
         describe(`given word "${word}"`, () => {
           const msg = 'some msg';
           const emoji = markWordsWithEmoji[word];

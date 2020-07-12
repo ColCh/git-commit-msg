@@ -3,14 +3,16 @@ jest.mock('fs');
 
 const fs = require('fs');
 
-const launch = msg => {
-  return new Promise(resolve => {
+const launch = (msg) => {
+  return new Promise((resolve) => {
     fs.readFileSync.mockReturnValueOnce(msg);
     fs.writeFileSync.mockImplementationOnce((...[, newMsg]) => {
       resolve(newMsg);
     });
     global.FORCE_CLI_EXECUTE = true;
-    require('../');
+    global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = false;
+    global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST = false;
+    require('..');
     // require clean cache
   });
 };

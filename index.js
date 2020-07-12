@@ -49,23 +49,29 @@ const whitelistedEmojiCategories = ['people', 'animals_and_nature', 'objects', '
 // #region options
 const options = {
   skipEmojis: () =>
-    global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS === true ||
-    !!process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS,
+    typeof global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS !== 'undefined'
+      ? Boolean(global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS)
+      : typeof process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS !== 'undefined'
+      ? /y/i.test(process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS)
+      : false,
   skipAutoSuggestEmojis: () =>
-    global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST === true ||
-    !!process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST,
+    typeof global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST !== 'undefined'
+      ? Boolean(global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST)
+      : typeof process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST !== 'undefined'
+      ? /y/i.test(process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST)
+      : false,
 };
 // #endregion
 
 // #region morphs
 const morphs = [
   // #region context emoji
-  msg => {
+  (msg) => {
     if (options.skipEmojis()) {
       return msg;
     }
 
-    const typesWithoutEmoji = Object.keys(commitTypeToEmoji).map(type =>
+    const typesWithoutEmoji = Object.keys(commitTypeToEmoji).map((type) =>
       [
         `(?<!${commitTypeToEmoji[type]}\\s)`, // no preceding emoji
         type,
@@ -99,7 +105,7 @@ const morphs = [
   // #endregion
 
   // #region emoji autosuggestion
-  msg => {
+  (msg) => {
     if (options.skipEmojis() || options.skipAutoSuggestEmojis()) {
       return msg;
     }
@@ -107,7 +113,7 @@ const morphs = [
     const { lib: emojiLib } = require('emojilib');
     const emojiSuggestions = require('emoji-suggestions');
 
-    const getEmojiCategory = emoji => {
+    const getEmojiCategory = (emoji) => {
       for (const [, info] of Object.entries(emojiLib)) {
         if (info.char === emoji) {
           return info.category;
@@ -115,11 +121,11 @@ const morphs = [
       }
     };
 
-    const filterEmojis = emojis => {
-      return emojis.filter(emoji => whitelistedEmojiCategories.includes(getEmojiCategory(emoji)));
+    const filterEmojis = (emojis) => {
+      return emojis.filter((emoji) => whitelistedEmojiCategories.includes(getEmojiCategory(emoji)));
     };
 
-    const suggestEmoji = word => {
+    const suggestEmoji = (word) => {
       const result = emojiSuggestions(word);
       if (!Array.isArray(result) || result.length === 0) {
         return null;
@@ -158,12 +164,12 @@ const morphs = [
   // #endregion
 
   // #region mark word with emoji
-  msg => {
+  (msg) => {
     if (options.skipEmojis()) {
       return msg;
     }
 
-    const wordsWithoutEmoji = Object.keys(markWordsWithEmoji).map(word =>
+    const wordsWithoutEmoji = Object.keys(markWordsWithEmoji).map((word) =>
       [
         `(?<!${markWordsWithEmoji[word]}\\s)`, // no preceding emoji
         word,
@@ -200,7 +206,7 @@ const morphs = [
 
   // #region infer context
   // works if commit is *verbose*
-  msg => {
+  (msg) => {
     /**
      * Take all things after `Changes to be committed` and before empty commented line
      * EXAMPLE:
@@ -239,13 +245,13 @@ const morphs = [
         changedFilesString
           .split('\n')
           // file paths start with "#" following by tab symbol
-          .filter(str => str.startsWith('#	'))
-          .map(str => (str.match(parseFilePathReg) || [])[1] || undefined)
-          .filter(x => x !== undefined)
+          .filter((str) => str.startsWith('#	'))
+          .map((str) => (str.match(parseFilePathReg) || [])[1] || undefined)
+          .filter((x) => x !== undefined)
       );
     })();
 
-    const inferContext = path => {
+    const inferContext = (path) => {
       const pathLowerCased = path.toLowerCase();
       const basename = path.replace(/^.*[\\/]/, '');
       const basenameLowerCased = path.replace(/^.*[\\/]/, '');
@@ -277,7 +283,7 @@ const morphs = [
         .split('/')
         // skip most parent dir
         .slice(1)
-        .filter(part => {
+        .filter((part) => {
           const lowercased = part.toLowerCase();
           return !(lowercased.startsWith('index') || ['__tests__', '__snapshots__'].includes(part));
         });
@@ -300,8 +306,8 @@ const morphs = [
         ? `Found ${uniqueContexts.length} ${contextsWord}`
         : `Found no contexts`;
 
-    const contextReport = `${[contextReportMsg, ...uniqueContexts.map(x => `    * ${x}`)]
-      .map(x => `# ${x}`)
+    const contextReport = `${[contextReportMsg, ...uniqueContexts.map((x) => `    * ${x}`)]
+      .map((x) => `# ${x}`)
       .join('\n')}\n`;
 
     // this this is being tested, so append inferred contexts
