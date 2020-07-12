@@ -235,7 +235,6 @@ const morphs = [
      *   #
      * (from git commit --verbose)
      */
-
     if (!msg.includes('# Changes to be committed:')) {
       return msg;
     }
@@ -258,15 +257,15 @@ const morphs = [
           '$|\\n', // str end
         ].join(''),
       );
-
-      return (
-        changedFilesString
-          .split('\n')
-          // file paths start with "#" following by tab symbol
-          .filter((str) => str.startsWith('#	'))
-          .map((str) => (str.match(parseFilePathReg) || [])[1] || undefined)
-          .filter((x) => x !== undefined)
+      const lines = changedFilesString.split('\n');
+      // file paths start with "#" following by tab symbol
+      const commentLines = lines.filter((str) => str.startsWith('#	'));
+      const dirtyFiles = commentLines.map(
+        (str) => (str.match(parseFilePathReg) || [])[1] || undefined,
       );
+      const cleanLines = dirtyFiles.filter((x) => x !== undefined);
+
+      return cleanLines;
     })();
 
     const inferContext = (path) => {
@@ -301,15 +300,20 @@ const morphs = [
       // #endregion
       const pathParts = path
         .split('/')
-        // skip most parent dir
-        .slice(1);
+        // skip project dir, filename
+        .slice(1, -1);
+
+      const extensions = ['js', 'ts', 'tsx', 'jsx'];
+      const projectDirs = ['lib', 'test', 'src', 'dev'];
+      const jestDirs = ['__tests__', '__snapshots__'];
+      const blacklist = [...extensions, ...jestDirs, ...projectDirs];
 
       const contexts = pathParts
         .concat(filenameFirstPart || filename)
         .filter((part) => {
           // filter test files
           const lowercased = part.toLowerCase();
-          return !(lowercased.startsWith('index') || ['__tests__', '__snapshots__'].includes(part));
+          return !(lowercased.startsWith('index') || blacklist.includes(part));
         })
         .slice(0, maxInferredContexts);
 
