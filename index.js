@@ -317,6 +317,59 @@ const morphs = [
     return msg.slice(0, firstCommentedLine) + contextReport + msg.slice(firstCommentedLine);
   },
   // #endregion
+
+  // #region append JIRA ticket
+  (msg) => {
+    const firstLinePos = msg.indexOf('\n');
+    const firstLine = msg.slice(0, firstLinePos === -1 ? undefined : firstLinePos);
+    const otherLines = firstLinePos === -1 ? '' : msg.slice(firstLinePos);
+
+    const [, branchName = ''] = /# On\sbranch\s([^\n]+)/gm.exec(msg) || [];
+
+    if (!branchName) {
+      return msg;
+    }
+
+    const parseTicket = (str) => {
+      // 1 prefix, 2 number, 3 other text
+      const ticketReg = /^\[?#?([a-zA-Z]+)(?:\s?|-|:)?(\d+)\]?(?:\s*:?\s*)([^$]*)$/;
+      const match = str.match(ticketReg);
+      if (!match) {
+        return null;
+      }
+      const [, prefixStr, number, body] = match;
+      if (!prefixStr || !number) {
+        return null;
+      }
+      return {
+        ticket: `${prefixStr.toUpperCase()}-${number}`,
+        prefixStr,
+        number,
+        body,
+      };
+    };
+
+    const { ticket = '' } = parseTicket(branchName) || {};
+
+    if (!ticket) {
+      return msg;
+    }
+
+    const { ticket: firstLineTicket = '' } = parseTicket(firstLine) || {};
+
+    if (firstLineTicket) {
+      return msg;
+    }
+
+    const replacedFirstLine = `${ticket}: ${firstLine}`;
+
+    if (replacedFirstLine === firstLine) {
+      return msg;
+    }
+
+    return replacedFirstLine + otherLines;
+  },
+  // #endregion
 ];
 // #endregion
 
