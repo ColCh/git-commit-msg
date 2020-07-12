@@ -760,4 +760,33 @@ describe('main test for git-commit-msg', () => {
       expect(firstLine).toMatch(/^FOOBAR-123: my/);
     });
   });
+
+  describe('TYPES CheatSheet', () => {
+    it('should add types CheatSheet', () => {
+      const msg = [`# Changes to be committed:`, `#	new file:   NewFile.txt`, `#`].join('\n');
+
+      const actual = main(msg);
+      expect(actual).toMatch(/# TYPES: ((\w+),\s)*(\w+)\n/);
+      expect(actual).toMatchSnapshot();
+    });
+
+    it('should exact types CheatSheet', () => {
+      const msg = [
+        'my message',
+        `# Changes to be committed:`,
+        `#	new file:   NewFile.txt`,
+        `#`,
+      ].join('\n');
+
+      const actual = main(msg);
+      const [, cheatSheet = ''] = /(# TYPES: ((\w+),\s)*(\w+))\n/.exec(actual) || [];
+      expect(cheatSheet).toBe(`# TYPES: ${Object.keys(commitTypeToEmoji).join(', ')}`);
+
+      // first line should be comment
+      const [firstLine] = actual.split(/\n/g);
+      expect(firstLine).not.toMatch(/# TYPES: ((\w+),\s)*(\w+)\n/);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
 });
