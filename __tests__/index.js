@@ -554,6 +554,25 @@ describe('main test for git-commit-msg', () => {
       );
     });
 
+    it('should strip extensions', () => {
+      const msg = [
+        'feat(foobarbaz)',
+        '',
+        `# Please enter the commit message for your changes. Lines starting`,
+        `# with '#' will be ignored, and an empty message aborts the commit.`,
+        `#`,
+        `# On branch master`,
+        `#`,
+        `# Changes to be committed:`,
+        `#	modified:   src/dev/js/foobarbaz.js`,
+        `#`,
+      ].join('\n');
+
+      expect(getContextMessagePart(main(msg))).toEqual(
+        [`# Found 1 context`, `#     * foobarbaz`].join('\n'),
+      );
+    });
+
     it('should match snapshot with full commit message', () => {
       const msg = [
         'my commit message',
