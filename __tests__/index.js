@@ -662,4 +662,70 @@ describe('main test for git-commit-msg', () => {
       ].join('\n'),
     );
   });
+
+  describe('JIRA ticket', () => {
+    it('should prepend ticket', () => {
+      const msg = [
+        'my commit message',
+        `# Please enter the commit message for your changes. Lines starting`,
+        `# with '#' will be ignored, and an empty message aborts the commit.`,
+        `#`,
+        `# On branch FOOBAR-123`,
+        `# Your branch is up to date with 'origin/FOOBAR-123'.`,
+        `#`,
+        `# Changes to be committed:`,
+        `#	modified:   modified-file.txt`,
+        `#	deleted:    deleted-file.txt`,
+        `#	new file:   new-file.txt`,
+        `#`,
+        `# Changes not staged for commit:`,
+        `#	deleted:    deleted-not-staged.txt`,
+        `#	modified:   modified-not-staged.txt`,
+        `#`,
+        `# Untracked files:`,
+        `#	untracked.txt`,
+        `#`,
+      ].join('\n');
+
+      const actual = main(msg);
+
+      expect(actual).toMatchSnapshot();
+
+      const [firstLine] = actual.split('\n');
+
+      expect(firstLine).toMatch(/^FOOBAR-123: /);
+    });
+
+    it('should covert ticket to uppercase', () => {
+      const msg = [
+        'my commit message',
+        `# Please enter the commit message for your changes. Lines starting`,
+        `# with '#' will be ignored, and an empty message aborts the commit.`,
+        `#`,
+        `# On branch foobar-123`,
+        `# Your branch is up to date with 'origin/foobar-123'.`,
+        `#`,
+        `# Changes to be committed:`,
+        `#	modified:   modified-file.txt`,
+        `#	deleted:    deleted-file.txt`,
+        `#	new file:   new-file.txt`,
+        `#`,
+        `# Changes not staged for commit:`,
+        `#	deleted:    deleted-not-staged.txt`,
+        `#	modified:   modified-not-staged.txt`,
+        `#`,
+        `# Untracked files:`,
+        `#	untracked.txt`,
+        `#`,
+      ].join('\n');
+
+      const actual = main(msg);
+
+      expect(actual).toMatchSnapshot();
+
+      const [firstLine] = actual.split('\n');
+
+      expect(firstLine).toMatch(/^FOOBAR-123: /);
+    });
+  });
 });
