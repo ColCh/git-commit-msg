@@ -272,9 +272,12 @@ const morphs = [
     const inferContext = (path) => {
       const pathLowerCased = path.toLowerCase();
       const basename = path.replace(/^.*[\\/]/, '');
-      const basenameLowerCased = path.replace(/^.*[\\/]/, '');
-      const filename = basename.slice(0, basename.lastIndexOf('.'));
+      const basenameLowerCased = basename.toLowerCase();
+      const filename =
+        basename.indexOf('.') !== -1 ? basename.slice(0, basename.lastIndexOf('.')) : basename;
       const filenameLowerCased = filename.toLowerCase();
+      const filenameFirstPart =
+        filename.indexOf('.') !== -1 ? filename.slice(0, filename.indexOf('.')) : null;
 
       // #region simple cases
       if (basenameLowerCased === 'package.json') {
@@ -296,21 +299,19 @@ const morphs = [
         return 'yarn';
       }
       // #endregion
-
       const pathParts = path
         .split('/')
         // skip most parent dir
-        .slice(1)
+        .slice(1);
+
+      const contexts = pathParts
+        .concat(filenameFirstPart || filename)
         .filter((part) => {
+          // filter test files
           const lowercased = part.toLowerCase();
           return !(lowercased.startsWith('index') || ['__tests__', '__snapshots__'].includes(part));
-        });
-
-      const contexts = pathParts.slice(0, maxInferredContexts);
-
-      if (pathParts.length === 0) {
-        return filename;
-      }
+        })
+        .slice(0, maxInferredContexts);
 
       return contexts;
     };

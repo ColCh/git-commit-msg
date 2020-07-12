@@ -463,7 +463,7 @@ describe('main test for git-commit-msg', () => {
       );
     });
 
-    it('should infer default double underscore context', () => {
+    it('should remove "__snapshots__"', () => {
       const msg = [
         'my commit message',
         `# Please enter the commit message for your changes. Lines starting`,
@@ -477,9 +477,7 @@ describe('main test for git-commit-msg', () => {
         `#`,
       ].join('\n');
 
-      expect(getContextMessagePart(main(msg))).toEqual(
-        [`# Found 1 context`, `#     * index`].join('\n'),
-      );
+      expect(getContextMessagePart(main(msg))).toEqual([`# Found no contexts`].join('\n'));
     });
 
     it('should infer context 3 times from full commit message', () => {
@@ -600,6 +598,39 @@ describe('main test for git-commit-msg', () => {
         `#	modified:   MODIFIED_FILE.ts`,
         `#	deleted:    DeLeTeDFiLe.js`,
         `#	new file:   newfile.txt`,
+        `#`,
+      ].join('\n');
+
+      expect(getContextMessagePart(main(msg))).toEqual(
+        [
+          `# Found 3 contexts`,
+          `#     * MODIFIED_FILE`,
+          `#     * DeLeTeDFiLe`,
+          `#     * newfile`,
+        ].join('\n'),
+      );
+    });
+
+    it('should remove "index"', () => {
+      const msg = [`# Changes to be committed:`, `#	modified:   index`, `#`].join('\n');
+
+      expect(getContextMessagePart(main(msg))).toEqual([`# Found no contexts`].join('\n'));
+    });
+
+    it('should leave only first part of filename', () => {
+      const msg = [`# Changes to be committed:`, `#	modified:   yolo.config.js`, `#`].join('\n');
+
+      expect(getContextMessagePart(main(msg))).toEqual(
+        [`# Found 1 context`, `#     * yolo`].join('\n'),
+      );
+    });
+
+    it('should leave only first part of filename for more contexts', () => {
+      const msg = [
+        `# Changes to be committed:`,
+        `#	modified:   MODIFIED_FILE.old.ts`,
+        `#	deleted:    DeLeTeDFiLe.old.js`,
+        `#	new file:   newfile.old.txt`,
         `#`,
       ].join('\n');
 
