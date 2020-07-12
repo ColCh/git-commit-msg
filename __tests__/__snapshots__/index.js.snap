@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`main test for git-commit-msg JIRA ticket should covert ticket to uppercase 1`] = `
+exports[`main test for git-commit-msg JIRA ticket should convert ticket to uppercase 1`] = `
 "FOOBAR-123: my commit message
 # Found 3 contexts
 #     * modified-file
@@ -11,6 +11,32 @@ exports[`main test for git-commit-msg JIRA ticket should covert ticket to upperc
 #
 # On branch foobar-123
 # Your branch is up to date with 'origin/foobar-123'.
+#
+# Changes to be committed:
+#	modified:   modified-file.txt
+#	deleted:    deleted-file.txt
+#	new file:   new-file.txt
+#
+# Changes not staged for commit:
+#	deleted:    deleted-not-staged.txt
+#	modified:   modified-not-staged.txt
+#
+# Untracked files:
+#	untracked.txt
+#"
+`;
+
+exports[`main test for git-commit-msg JIRA ticket should not add ticket twice 1`] = `
+"FOOBAR-123: my commit message
+# Found 3 contexts
+#     * modified-file
+#     * deleted-file
+#     * new-file
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch FOOBAR-123
+# Your branch is up to date with 'origin/FOOBAR-123'.
 #
 # Changes to be committed:
 #	modified:   modified-file.txt

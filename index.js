@@ -355,6 +355,12 @@ const morphs = [
       return msg;
     }
 
+    const { ticket: firstLineTicket = '' } = parseTicket(firstLine) || {};
+
+    if (firstLineTicket) {
+      return msg;
+    }
+
     const replacedFirstLine = `${ticket}: ${firstLine}`;
 
     if (replacedFirstLine === firstLine) {
