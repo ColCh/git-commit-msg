@@ -47,20 +47,26 @@ const whitelistedEmojiCategories = ['people', 'animals_and_nature', 'objects', '
 // #endregion
 
 // #region options
+/* eslint-disable no-nested-ternary */
 const options = {
   skipEmojis: () =>
+    // @ts-ignore
     typeof global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS !== 'undefined'
-      ? Boolean(global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS)
+      ? // @ts-ignore
+        Boolean(global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS)
       : typeof process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS !== 'undefined'
       ? /y/i.test(process.env.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS)
       : false,
   skipAutoSuggestEmojis: () =>
+    // @ts-ignore
     typeof global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST !== 'undefined'
-      ? Boolean(global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST)
+      ? // @ts-ignore
+        Boolean(global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST)
       : typeof process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST !== 'undefined'
       ? /y/i.test(process.env.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST)
       : false,
 };
+/* eslint-enable no-nested-ternary */
 // #endregion
 
 // #region morphs
@@ -128,7 +134,9 @@ const morphs = [
       return msg;
     }
 
+    // @ts-ignore
     const { lib: emojiLib } = require('emojilib');
+    // @ts-ignore
     const emojiSuggestions = require('emoji-suggestions');
 
     const getEmojiCategory = (emoji) => {
@@ -137,6 +145,7 @@ const morphs = [
           return info.category;
         }
       }
+      return null;
     };
 
     const filterEmojis = (emojis) => {
@@ -405,6 +414,7 @@ function main(msg) {
   return morphs.reduceRight((currentMessage, morph) => morph(currentMessage), msg);
 }
 
+// @ts-ignore
 if (global.FORCE_CLI_EXECUTE || require.main === module) {
   const fs = require('fs');
   const process = require('process');

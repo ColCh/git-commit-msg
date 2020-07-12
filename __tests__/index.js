@@ -3,7 +3,11 @@ const { main, commitTypeToEmoji, markWordsWithEmoji } = require('..');
 
 jest.mock('emoji-suggestions', () => jest.fn());
 
+/* eslint-disable import/order */
+// @ts-ignore
+// @ts-ignore
 const emojiSuggestionsMock = require('emoji-suggestions');
+/* eslint-enable import/order */
 
 const getMessage = (commitOutput) => {
   const firstCommentedLine = commitOutput.indexOf('\n# ');
@@ -77,8 +81,10 @@ describe('main test for git-commit-msg', () => {
           });
 
           it('should not add emoji in case global option specified', () => {
+            // @ts-ignore
             global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = true;
             expect(getMessage(main(`${type}: ${msg}`))).toEqual(`${type}: ${msg}`);
+            // @ts-ignore
             delete global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
           });
 
@@ -178,8 +184,10 @@ describe('main test for git-commit-msg', () => {
           });
 
           it('should not add emoji for oneline msg if flag specified', () => {
+            // @ts-ignore
             global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = true;
             expect(getMessage(main(`${msg} ${word} ${msg}`))).toEqual(`${msg} ${word} ${msg}`);
+            // @ts-ignore
             delete global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
           });
 
@@ -262,7 +270,9 @@ describe('main test for git-commit-msg', () => {
       const fooEmoji = '👋';
 
       beforeEach(() => {
+        // @ts-ignore
         emojiSuggestionsMock.mockReset();
+        // @ts-ignore
         emojiSuggestionsMock.mockReturnValue([{ FOO: [fooEmoji] }]);
       });
 
@@ -283,6 +293,7 @@ describe('main test for git-commit-msg', () => {
       });
 
       it('should not suggest emoji for commit message with ticket name and real type', () => {
+        // @ts-ignore
         emojiSuggestionsMock.mockReturnValue([{ test: [fooEmoji] }]);
         expect(getMessage(main(`FOOBAR-0: test: test`))).toEqual(
           `FOOBAR-0: ${commitTypeToEmoji.test} test: ${fooEmoji} test`,
@@ -320,14 +331,18 @@ describe('main test for git-commit-msg', () => {
       });
 
       it('should not add emoji in case global option specified', () => {
+        // @ts-ignore
         global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = true;
         expect(getMessage(main(`FOO`))).toEqual(`FOO`);
+        // @ts-ignore
         delete global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS;
       });
 
       it('should not add emoji in case global option specified for skipping auto suggested emojis', () => {
+        // @ts-ignore
         global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST = true;
         expect(getMessage(main(`FOO`))).toEqual(`FOO`);
+        // @ts-ignore
         delete global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST;
       });
 
@@ -344,12 +359,14 @@ describe('main test for git-commit-msg', () => {
       });
 
       it('should not suggest emoji for merge commit', () => {
+        // @ts-ignore
         emojiSuggestionsMock.mockReturnValue([{ branch: [fooEmoji] }]);
         const msg = [`Merge branch 'foo-bar-baz' into 'master'`, 'Add foo, remove baz'].join('');
         expect(getMessage(main(msg))).toEqual(msg);
       });
 
       it('should not suggest emoji for message like merge commit', () => {
+        // @ts-ignore
         emojiSuggestionsMock.mockReturnValue([{ branch: [fooEmoji] }]);
         const msg = [
           `Fobar-1: Merge branch 'foo-bar-baz' into 'master'`,

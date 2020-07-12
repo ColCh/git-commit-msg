@@ -5,15 +5,21 @@ const fs = require('fs');
 
 const launch = (msg) => {
   return new Promise((resolve) => {
+    // @ts-ignore
     fs.readFileSync.mockReturnValueOnce(msg);
+    // @ts-ignore
     fs.writeFileSync.mockImplementationOnce((...[, newMsg]) => {
       resolve(newMsg);
     });
+    // @ts-ignore
     global.FORCE_CLI_EXECUTE = true;
+    // @ts-ignore
     global.GIT_COMMIT_MSG_HOOK_SKIP_ADDING_EMOJIS = false;
+    // @ts-ignore
     global.GIT_COMMIT_MSG_HOOK_SKIP_AUTO_SUGGEST = false;
+
     require('..');
-    // require clean cache
+    // TODO: require clean cache?
   });
 };
 
