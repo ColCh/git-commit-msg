@@ -57,5 +57,11 @@
     "*.js": [
       "prettier-eslint"
     ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".history"
+    ]
   }
 }
