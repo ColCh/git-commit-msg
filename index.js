@@ -65,6 +65,24 @@ const options = {
 
 // #region morphs
 const morphs = [
+  // #region add TYPES CheatSheet
+  (msg) => {
+    if (/# TYPES: ((\w+),\s)*(\w+)\n/.test(msg)) {
+      return msg;
+    }
+    const types = Object.keys(commitTypeToEmoji).join(', ');
+    const typesCheatSheet = `# TYPES: ${types}\n`;
+    // insert TYPES as first line before first commented lines
+    const firstCommentedLine = msg.indexOf('# ');
+
+    if (firstCommentedLine === -1) {
+      return `${msg}\n${typesCheatSheet}`;
+    }
+
+    return msg.slice(0, firstCommentedLine) + typesCheatSheet + msg.slice(firstCommentedLine);
+  },
+  // #endregion
+
   // #region context emoji
   (msg) => {
     if (options.skipEmojis()) {
