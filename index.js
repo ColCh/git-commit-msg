@@ -75,6 +75,10 @@ const morphs = [
     // insert TYPES as first line before first commented lines
     const firstCommentedLine = msg.indexOf('# ');
 
+    if (firstCommentedLine === -1) {
+      return `${msg}\n${typesCheatSheet}`;
+    }
+
     return msg.slice(0, firstCommentedLine) + typesCheatSheet + msg.slice(firstCommentedLine);
   },
   // #endregion

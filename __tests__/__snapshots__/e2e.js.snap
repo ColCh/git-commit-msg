@@ -2,6 +2,7 @@
 
 exports[`e2e test should match snapshot 1`] = `
 "😒 chore(pkg): my commit 💬 message
+# TYPES: chore, docs, feat, fix, refactor, style, test, type, perf, ci
 # Found 3 contexts
 #     * modified-file
 #     * deleted-file
