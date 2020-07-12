@@ -463,7 +463,7 @@ describe('main test for git-commit-msg', () => {
       );
     });
 
-    it('should infer default double underscore context', () => {
+    it('should remove "__snapshots__"', () => {
       const msg = [
         'my commit message',
         `# Please enter the commit message for your changes. Lines starting`,
@@ -477,9 +477,7 @@ describe('main test for git-commit-msg', () => {
         `#`,
       ].join('\n');
 
-      expect(getContextMessagePart(main(msg))).toEqual(
-        [`# Found 1 context`, `#     * index`].join('\n'),
-      );
+      expect(getContextMessagePart(main(msg))).toEqual([`# Found no contexts`].join('\n'));
     });
 
     it('should infer context 3 times from full commit message', () => {
@@ -611,6 +609,12 @@ describe('main test for git-commit-msg', () => {
           `#     * newfile`,
         ].join('\n'),
       );
+    });
+
+    it('should remove "index"', () => {
+      const msg = [`# Changes to be committed:`, `#	modified:   index`, `#`].join('\n');
+
+      expect(getContextMessagePart(main(msg))).toEqual([`# Found no contexts`].join('\n'));
     });
 
     it('should leave only first part of filename', () => {
